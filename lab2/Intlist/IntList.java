@@ -54,7 +54,7 @@ public class IntList {
         IntList res = new IntList(L.first * L.first, null);
         IntList ptr = res;
         L = L.rest;
-        while (L != null) {
+        while (L != null) {//双指针遍历，诸位进行操作
             ptr.rest = new IntList(L.first * L.first, null);
             L = L.rest;
             ptr = ptr.rest;
@@ -66,10 +66,11 @@ public class IntList {
      * Returns a list equal to L with all elements squared. Non-destructive.
      */
     public static IntList squareListRecursive(IntList L) {
-        if (L == null) {
+        if (L == null) {//退出条件
             return null;
         }
         return new IntList(L.first * L.first, squareListRecursive(L.rest));
+        //每次递归L的下一个，这样递归最后返回的就是开头的第一个intlist
     }
 
     /** DO NOT MODIFY ANYTHING ABOVE THIS LINE! */
@@ -82,7 +83,17 @@ public class IntList {
 
     public static IntList dcatenate(IntList A, IntList B) {
         //TODO:  fill in method
-        return null;
+        if(A == null){//如果A是空则直接返回B
+            return B;
+        }
+        //使用常规方法
+        IntList res = A;
+        while(A.rest != null){//遍历到A的最后
+            A = A.rest;
+        }
+        A.rest = B;//向A加入B的元素,因为不能new所以直接指向B即可，B是不是null都无所谓
+        return res;
+
     }
 
     /**
@@ -91,7 +102,19 @@ public class IntList {
      */
     public static IntList catenate(IntList A, IntList B) {
         //TODO:  fill in method
-        return null;
+        if(A == null){
+            return B;
+        }
+        IntList C = new IntList(A.first,null);
+        IntList res = C;
+        while(A.rest != null){//创建C来存储A的值，但是没有修改A
+            C.rest = new IntList(A.rest.first,null  );
+            C = C.rest;
+            A = A.rest;
+        }
+        C.rest = B;
+
+        return res;
     }
 
 
@@ -125,7 +148,7 @@ public class IntList {
      * Returns a new IntList containing the ints in ARGS. You are not
      * expected to read or understand this method.
      */
-    public static IntList of(Integer... args) {
+    public static IntList of(Integer... args) { //此处是可变参数做形参，本质是数组，实参可以是0~多个，可以是数组
         IntList result, p;
 
         if (args.length > 0) {
