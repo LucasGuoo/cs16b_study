@@ -19,6 +19,22 @@ public class IntListTest {
         IntList x = IntList.of(3, 2, 1);
         assertEquals(threeTwoOne, x);
     }
+    @Test
+    public  void testReverse(){
+        IntList res1 = IntList.reverse(IntList.of(1,2,3,4,5,6));
+        IntList exp1 = IntList.of(6,5,4,3,2,1);
+        assertEquals(res1,exp1);
+
+        IntList res2 = IntList.reverse(null);
+        IntList exp2 = null;
+        assertEquals(res2, exp2);
+
+        IntList a = IntList.of(1,2,3);//检验破坏性
+        IntList res3 = IntList.reverse(a);
+        assertNotEquals(a,res2);
+
+
+    }
 
     @Test
     public void testdSquareList() {
