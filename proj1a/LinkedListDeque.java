@@ -56,25 +56,6 @@ public class LinkedListDeque<T> {
 //        size++;
 //    }
 
-    public static void main(String[] args) {
-        LinkedListDeque<Integer> integerLinkedListDeque = new LinkedListDeque<>();
-
-        integerLinkedListDeque.addFirst(1);
-        integerLinkedListDeque.addFirst(2);
-        integerLinkedListDeque.addLast(3);
-        System.out.println(integerLinkedListDeque.get(0));
-        System.out.println(integerLinkedListDeque.get(-1));
-        System.out.println(integerLinkedListDeque.get(1));
-        System.out.println(integerLinkedListDeque.get(3));
-        System.out.println(integerLinkedListDeque.getRecursive(0));
-        System.out.println(integerLinkedListDeque.getRecursive(-1));
-        System.out.println(integerLinkedListDeque.getRecursive(1));
-        System.out.println(integerLinkedListDeque.getRecursive(3));
-        integerLinkedListDeque.printDeque();
-        integerLinkedListDeque.addLast(4);
-
-
-    }
 
     public void addLast(T item) {
         Node last = sentinel.previous;

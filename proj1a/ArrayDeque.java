@@ -7,38 +7,17 @@ public class ArrayDeque<T> {
     private int nextLast;
     private final double FACTOR = 0.5;
 
-    public ArrayDeque(){
+    public ArrayDeque() {
         items = (T[]) new Object[8];
         nextFirst = 0;
         nextLast = 1;
         size = 0;
     }
 
-    public int getSize(){
+    public int getSize() {
         return size;
     }
 
-    public static void main(String[] args) {
-        ArrayDeque<Integer> integerArrayDeque = new ArrayDeque<>();
-        integerArrayDeque.addFirst(1);
-        integerArrayDeque.addFirst(2);
-        integerArrayDeque.addFirst(3);
-        integerArrayDeque.addLast(4);
-        integerArrayDeque.addLast(5);
-        integerArrayDeque.addLast(6);
-        integerArrayDeque.addLast(7);
-        integerArrayDeque.addLast(8);
-        integerArrayDeque.addLast(9);
-        System.out.println(integerArrayDeque.removeFirst());
-        System.out.println(integerArrayDeque.removeFirst());
-        System.out.println(integerArrayDeque.removeFirst());
-
-        integerArrayDeque.printDeque();
-        System.out.println(integerArrayDeque.removeLast());
-        System.out.println(integerArrayDeque.removeLast());
-        integerArrayDeque.printDeque();
-
-    }
     public void addFirst(T item) {
         if (size == items.length) { //超出则变为150%
             changeSize((int) (items.length * (1 + FACTOR)));
@@ -58,7 +37,7 @@ public class ArrayDeque<T> {
         items[nextLast] = item;
         nextLast++;
         size++;
-        if(nextLast > items.length) { //超出边界则下一个自动放在队首
+        if (nextLast > items.length) { //超出边界则下一个自动放在队首
             nextLast = 0;
         }
     }
