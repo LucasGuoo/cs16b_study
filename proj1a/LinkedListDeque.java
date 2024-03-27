@@ -1,10 +1,16 @@
+import java.util.StringJoiner;
+
 public class LinkedListDeque<T> {
 
-  private  Node sentinal;
+  private  Node sentinel;
 
   private int size;
 
-    private  class Node<T>{//
+    /**
+     * 封装成员内部类，保护原始数据
+     *
+     */
+    private  class Node{
         public T item;
         public Node previous;
         private Node next;
@@ -15,10 +21,15 @@ public class LinkedListDeque<T> {
           this.next = next;
         }
     }
+
+    /**
+     * 初始化一个空的双端链表
+     */
     public LinkedListDeque(){
-        sentinal = new Node(null,null,null);//初始化一个头尾相连的哨兵节点,哨兵节点的值为null方便get方法
-        sentinal.next = sentinal;//让哨兵首尾相连
-        sentinal.previous = sentinal;
+        sentinel = new Node(null,null,null);//初始化一个头尾相连的哨兵节点,哨兵节点的值为null方便get方法
+        sentinel.next = sentinel;//让哨兵首尾相连
+        sentinel.previous = sentinel;
+        getResult = sentinel;
         size = 0;
     }
 
@@ -26,10 +37,10 @@ public class LinkedListDeque<T> {
 //        if(isEmpty()) {
 //            linkToCircle(item);
 //        }
-      Node head = sentinal.next;
-      Node addItem = new Node(item,sentinal,head);
+      Node head = sentinel.next;
+      Node addItem = new Node(item, sentinel,head);
       head.previous = addItem;
-      sentinal.next = addItem;
+      sentinel.next = addItem;
       size++;
     }
 
@@ -55,42 +66,60 @@ public class LinkedListDeque<T> {
         System.out.println(integerLinkedListDeque.get(-1));
         System.out.println(integerLinkedListDeque.get(1));
         System.out.println(integerLinkedListDeque.get(3));
+        System.out.println(integerLinkedListDeque.getRecursive(0));
+        System.out.println(integerLinkedListDeque.getRecursive(-1));
+        System.out.println(integerLinkedListDeque.getRecursive(1));
+        System.out.println(integerLinkedListDeque.getRecursive(3));
+        integerLinkedListDeque.printDeque();
+        integerLinkedListDeque.addLast(4);
 
 
     }
 
     public void addLast(T item) {
-        Node last = sentinal.previous;
-        Node addItem = new Node(item, last, sentinal);
+        Node last = sentinel.previous;
+        Node addItem = new Node(item, last, sentinel);
         last.next = addItem;
-        sentinal.previous = addItem;
+        sentinel.previous = addItem;
     }
 
     public boolean isEmpty() {
-        return sentinal.next == sentinal; //如果哨兵自连接则说明为空
+        return sentinel.next == sentinel; //如果哨兵自连接则说明为空
     }
 
     public int size() {
         return size;
     }
-    public void printDeque() {
 
+    /**
+     * 从头到尾打印链表的内容，用空格分开
+     */
+    public void printDeque() {
+        Node result = sentinel.next;
+        StringJoiner stringJoiner = new StringJoiner(" ");//用空格拼接字符串数组
+        while( result != sentinel){
+            stringJoiner.add(result.item.toString());
+            result = result.next;
+        }
+        System.out.println(stringJoiner);
     }
+
 
     public T removeFirst() {
         if(isEmpty()) {//如果为空则返回空值
             return null;
         }
         //解绑第一个节点
-        Node first = sentinal.next;
+        Node first = sentinel.next;
         Node second = first.next;
         first.next = null;
         first.previous = null;
         T removeItem = (T)first.item;
         first.item = null;
+        size--;
         //继续链接
-        sentinal.next = second;
-        second.previous = sentinal;
+        sentinel.next = second;
+        second.previous = sentinel;
         return removeItem;
     }
 
@@ -98,14 +127,15 @@ public class LinkedListDeque<T> {
         if(isEmpty()) {//如果为空则返回空值
             return null;
         }
-        Node remove = sentinal.previous;
+        Node remove = sentinel.previous;
         Node last = remove.previous;
         remove.previous = null;
         remove.next = null;
         T removeItem = (T)remove.item;
+        size--;
 
-        last.next = sentinal;
-        sentinal.previous = last;
+        last.next = sentinel;
+        sentinel.previous = last;
         return removeItem;
     }
 
@@ -115,10 +145,33 @@ public class LinkedListDeque<T> {
      * @return
      */
     public T get(int index){
-        Node result = sentinal;
-        while ( result.next != sentinal || index-- >= 0 ) {
+        if(index < 0){//排除负值的情况
+            return null;
+        }
+        Node result = sentinel.next;
+        while ( result != sentinel && index > 0 ) {
             result = result.next;
+            index--;
         }
         return  (T)result.item;
+    }
+
+    /**
+     * this pointer is for getRecursive method
+     */
+    private Node getResult ;
+
+    /**
+     *get the item of index using recursion
+     */
+    public  T getRecursive(int index) {
+        if( index < 0){
+            T result = (T)getResult.item;
+            getResult = sentinel;//取到后应该把指针复原
+            return result;
+        }
+        getResult = getResult.next;
+        index--;
+        return getRecursive(index);
     }
 }
