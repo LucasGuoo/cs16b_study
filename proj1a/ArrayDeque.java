@@ -1,6 +1,7 @@
+import java.util.Deque;
 import java.util.StringJoiner;
 
-public class ArrayDeque<T> {
+public class ArrayDeque<T>  {
     private T[] items;
     private int size;
     private int nextFirst;
@@ -120,4 +121,27 @@ public class ArrayDeque<T> {
         }
         System.out.println(stringJoiner);
     }
+
+    /**
+     * 根据索引取值
+     * @param index
+     * @return
+     */
+    public T get(int index) {
+        if (index >= 0 && index < size ) {
+            int result ;
+            if (nextFirst < nextLast) { //头在尾前面，正常取
+                result = nextFirst + 1 + index;
+            } else { //头在尾后面，分情况取
+                if (index < (items.length - nextFirst -1)) { //不需要回到头部
+                    result = nextFirst + 1 + index;
+                } else {
+                    result = index - (items.length - nextFirst -1); //从头开始取
+                }
+            }
+            return items[result];
+        }
+        return null;
+    }
+
 }
