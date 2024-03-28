@@ -23,24 +23,26 @@ public class ArrayDeque<T>  {
         if (size == items.length) { //超出则变为150%
             changeSize((int) (items.length * (1 + FACTOR)));
         }
-        items[nextFirst] = item;
-        nextFirst--;
-        size++;
         if (nextFirst < 0) { //双端数组，需要往尾部继续插入
             nextFirst = items.length + nextFirst;
         }
+        items[nextFirst] = item;
+        nextFirst--;
+        size++;
+        
     }
 
     public void addLast(T item) {
         if (size == items.length) { //超出则变为150%
             changeSize((int) (items.length * (1 + FACTOR)));
         }
-        items[nextLast] = item;
-        nextLast++;
-        size++;
         if (nextLast > items.length) { //超出边界则下一个自动放在队首
             nextLast = 0;
         }
+        items[nextLast] = item;
+        nextLast++;
+        size++;
+        
     }
 
     /**
@@ -127,16 +129,18 @@ public class ArrayDeque<T>  {
      * @param index
      * @return
      */
-    public T get(int index) {
+    @Override
+    public Item get(int index) {
         if (index >= 0 && index < size ) {
             int result ;
-            if (nextFirst < nextLast) { //头在尾前面，正常取
+            if (nextFirst < nextLast && size != items.length) {
+                //头在尾前面，正常取,需要排除满数组的情况，否则会空指针异常！！！
                 result = nextFirst + 1 + index;
-            } else { //头在尾后面，分情况取
+            } else { //头在尾后面，以及满数组的情况
                 if (index < (items.length - nextFirst -1)) { //不需要回到头部
                     result = nextFirst + 1 + index;
                 } else {
-                    result = index - (items.length - nextFirst -1); //从头开始取
+                    result = index - (items.length - nextFirst -1); //从头开始取，以及满数组的情况
                 }
             }
             return items[result];
